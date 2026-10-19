@@ -31,7 +31,7 @@ function Index() {
   useEffect(() => {
     const args = new URLSearchParams(window.location.search);
     const name = args.get('applet');
-    if (name === 'decrypt' || name === 'verify' || name === 'transfer') setApplet(name);
+    if (name && Object.hasOwn(applets, name)) setApplet(name as AppletName);
     const requestedSpeed = Number(args.get('speed'));
     if ([.5, 1, 2].includes(requestedSpeed)) setSpeed(requestedSpeed);
     const requestedDuration = Number(args.get('duration'));
@@ -66,7 +66,7 @@ function Index() {
     <div className="ambient-grid" aria-hidden="true" />
     <header className="screen-header"><a href="/" className="brand"><span className="brand-symbol"><Command /></span>CIPHER<span className="brand-divider" /><span className="brand-subtitle">CINEMATIC SYSTEMS</span></a><div className="header-right"><span className="header-indicator" />SYSTEM ONLINE<span className="header-version">V.01.06</span></div></header>
     <div className="scene-caption"><span className="eyebrow">SCREEN SIMULATION / 001</span><span className="caption-rule" /><span>Nothing real. Everything cinematic.</span></div>
-    <section className="applet-window" aria-label="Cinematic simulation applet">
+    <section className={`applet-window theme-${applet}`} aria-label="Cinematic simulation applet">
       <div className="window-chrome"><div className="window-title"><SquareTerminal />cipher / {applet}.applet</div><div className="window-chrome-right"><span><LockKeyhole /> ENCRYPTED SESSION</span><Button variant="screenIcon" size="icon" title="Toggle fullscreen" aria-label="Toggle fullscreen" onClick={toggleFullscreen}>{fullscreen ? <Minimize /> : <Expand />}</Button></div></div>
       <div className="window-content"><LoadingApplet applet={applet} progress={progress} code={code} running={running} /></div>
       <div className="window-footer"><span><i />{progress >= 100 ? 'SEQUENCE COMPLETE' : running ? 'SIMULATION RUNNING' : 'SIMULATION PAUSED'}</span><span>SESSION <strong>8F2A–04C1</strong><LockKeyhole /></span></div>

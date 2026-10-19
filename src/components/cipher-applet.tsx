@@ -1,8 +1,12 @@
+import { CinematicScene } from './cinematic-scenes';
 import { useEffect, useRef } from 'react';
 import { Fingerprint, ShieldCheck, Radio } from 'lucide-react';
 
 export const applets = {
   decrypt: { label: 'Decryption', verb: 'DECRYPTING', file: 'classified_archive.enc', Icon: Fingerprint },
+  hash: { label: 'Hash cracking', verb: 'SEARCHING', file: 'target.sha256', Icon: Fingerprint },
+  bruteforce: { label: 'Password brute force', verb: 'ENUMERATING', file: 'terminal_07', Icon: Fingerprint },
+  crypto: { label: 'Ghost chain', verb: 'VALIDATING', file: 'ghost_ledger', Icon: Radio },
   verify: { label: 'Verification', verb: 'VERIFYING', file: 'security_signature.key', Icon: ShieldCheck },
   transfer: { label: 'Data transfer', verb: 'TRANSFERRING', file: 'secure_payload.bin', Icon: Radio },
 };
@@ -44,6 +48,7 @@ function SignalField({ running }: { running: boolean }) {
 }
 
 export function LoadingApplet({ progress, code, running, applet }: AppletProps) {
+  if (['decrypt', 'hash', 'bruteforce', 'crypto'].includes(applet)) return <CinematicScene {...{ progress, code, running, applet }} />;
   const config = applets[applet];
   const Icon = config.Icon;
   const done = progress >= 100;
