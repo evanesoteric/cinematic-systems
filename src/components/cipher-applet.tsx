@@ -1,3 +1,4 @@
+import { ExpandedScene, expandedScenes, type ExpandedName } from './expanded-scenes';
 import { CinematicScene } from './cinematic-scenes';
 import { useEffect, useRef } from 'react';
 import { Fingerprint, ShieldCheck, Radio } from 'lucide-react';
@@ -7,6 +8,13 @@ export const applets = {
   hash: { label: 'Hash cracking', verb: 'SEARCHING', file: 'target.sha256', Icon: Fingerprint },
   bruteforce: { label: 'Password brute force', verb: 'ENUMERATING', file: 'terminal_07', Icon: Fingerprint },
   crypto: { label: 'Ghost chain', verb: 'VALIDATING', file: 'ghost_ledger', Icon: Radio },
+  memory: { label: 'Memory Forensics', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  intrusion: { label: 'Network Intrusion', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  mitm: { label: 'MITM Attack', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  wallet: { label: 'Bitcoin Wallet Tracing', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  wipe: { label: 'Secure Wipe', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  triangulation: { label: 'Location Triangulation', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
+  firewall: { label: 'Firewall Breach', verb: 'PROCESSING', file: 'simulation', Icon: Radio },
   verify: { label: 'Verification', verb: 'VERIFYING', file: 'security_signature.key', Icon: ShieldCheck },
   transfer: { label: 'Data transfer', verb: 'TRANSFERRING', file: 'secure_payload.bin', Icon: Radio },
 };
@@ -48,6 +56,7 @@ function SignalField({ running }: { running: boolean }) {
 }
 
 export function LoadingApplet({ progress, code, running, applet }: AppletProps) {
+  if (Object.hasOwn(expandedScenes, applet)) return <ExpandedScene {...{ progress, code, running }} applet={applet as ExpandedName} />;
   if (['decrypt', 'hash', 'bruteforce', 'crypto'].includes(applet)) return <CinematicScene {...{ progress, code, running, applet }} />;
   const config = applets[applet];
   const Icon = config.Icon;
